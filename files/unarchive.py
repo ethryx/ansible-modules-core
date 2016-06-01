@@ -309,6 +309,10 @@ class ZipArchive(object):
                 pass
             fut_gid = run_gid
 
+        # Remove header and footer of zipinfo output
+        lines.pop(0)
+        lines.pop(len(lines) - 1)
+
         for line in old_out.splitlines():
             change = False
 
@@ -320,7 +324,11 @@ class ZipArchive(object):
             version = pcs[0][1]
             ostype = pcs[0][2]
             size = int(pcs[3])
-            path = pcs[7]
+
+            # determine the full path by removing other pieces of the line (since the path can contain spaces)
+            copiedpcs = list(pcs)
+            copiedpcs[0:7] = []
+            path = ' '.join(map(str, copiedpcs))
 
             # Skip excluded files
             if path in self.excludes:
