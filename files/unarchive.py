@@ -317,7 +317,6 @@ class ZipArchive(object):
             change = False
 
             pcs = line.split()
-            if len(pcs) != 8: continue
 
             ztype = pcs[0][0]
             permstr = pcs[0][1:10]
